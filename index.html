@@ -253,11 +253,21 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 .krow .uline { margin: 0; }
 .kchip { font-size: 24px; font-weight: 600; color: var(--sun); background: var(--ink); padding: 6px 20px; border-radius: 30px; margin: 0; white-space: nowrap; }
 
+/* Dibujos ilustrativos */
+.ill { position: absolute; }
+.ill svg { display: block; }
+@keyframes drawon {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.ill .ln { stroke-dasharray: 1; stroke-dashoffset: 0; animation: drawon 1600ms cubic-bezier(0.4, 0, 0.2, 1) both; animation-delay: 300ms; }
+
 </style>
 </head>
 <body>
 <div id="viewport"><div id="stage">
 <section id="cover" class="dark" data-transition="push">
+<div class="ill f" style="--i:5; left:128px; top:770px; width:960px; height:200px"><svg aria-label="Islas Canarias" width="960" height="200" viewBox="0 0 960 200" xmlns="http://www.w3.org/2000/svg"><path class="ln" pathLength="1" d="M40,150 C55,130 85,130 95,145 C90,165 60,175 40,150 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M100,30 C120,20 135,45 128,75 C122,100 105,105 98,80 C92,60 90,40 100,30 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M200,120 C215,108 240,110 245,125 C240,142 215,147 203,138 C197,132 196,126 200,120 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M270,110 C300,85 360,60 400,50 C410,52 405,65 390,75 C370,95 340,120 300,130 C280,132 265,122 270,110 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M480,130 C485,100 520,90 545,102 C565,115 560,150 535,160 C505,168 478,155 480,130 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M700,160 C720,140 760,110 800,85 C830,65 860,45 875,50 C880,60 860,75 840,90 C800,120 760,150 730,170 C712,178 698,172 700,160 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M880,40 C895,20 925,5 945,10 C952,18 940,35 925,45 C905,58 885,60 880,40 Z" fill="#183A52" stroke="#F2C230" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M322,100 L338,70 L354,96" fill="none" stroke="#F5F1E8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M560,40 q12,-10 24,0 t24,0" fill="none" stroke="#2FA6D6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M600,175 q12,-10 24,0 t24,0" fill="none" stroke="#2FA6D6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M150,190 q12,-10 24,0 t24,0" fill="none" stroke="#2FA6D6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
 <div class="stripe st1 d" style="--i:0"></div>
 <div class="stripe st2 d" style="--i:1"></div>
 <div class="stripe st3 d" style="--i:2"></div>
@@ -267,10 +277,11 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <p class="lead a" style="--i:4; margin-top:40px; width:1100px">Las medidas laborales del programa de Coalición Canaria y Primero Canarias</p>
 </div>
 <p class="credit f" style="--i:6">[Tu nombre] · Derecho del Trabajo, 2.º parcial</p>
-<aside>Buenos días. Presento el programa «Defiende Canarias», con el que Coalición Canaria y Primero Canarias concurren a las elecciones generales del 29 de noviembre. No lo analizo como un mitin, sino desde la asignatura: qué medidas laborales contiene, con qué parte del temario conectan y si encajan en el sistema laboral actual.</aside>
+<aside>Buenos días. Presento las medidas laborales de «Defiende Canarias», el programa de Coalición Canaria y Primero Canarias para las generales del 29 de noviembre, analizadas desde la asignatura: qué proponen, con qué parte del temario conectan y si encajan en el sistema laboral actual.</aside>
 </section>
 
 <section id="ruta" data-transition="fade">
+<div class="ill f" style="--i:6; left:128px; top:700px; width:1664px; height:200px"><svg aria-label="Camino con cuatro etapas y banderín" width="1664" height="200" viewBox="0 0 1664 200" xmlns="http://www.w3.org/2000/svg"><path class="ln" pathLength="1" d="M0,120 C200,40 400,180 629,100 S1000,40 1059,110 S1400,170 1560,90" fill="none" stroke="#0F2433" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1"/><circle cx="199" cy="78" r="14" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><circle cx="629" cy="100" r="14" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><circle cx="1059" cy="110" r="14" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><circle cx="1489" cy="108" r="14" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path class="ln" pathLength="1" d="M1600,100 V20" fill="none" stroke="#0F2433" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /><path d="M1600,22 L1660,38 L1600,54 Z" fill="#2FA6D6" stroke="#0F2433" stroke-width="3"/></svg></div>
 <p class="eyebrow a" style="--i:0">GUION</p>
 <h2 class="head a" style="--i:1; width:1400px">Cuatro pasos para leer el programa</h2>
 <div class="steps">
@@ -279,10 +290,11 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <div class="step p" style="--i:4"><p class="num">03</p><h3 class="h3">El encaje</h3><p class="small">Cada medida frente al sistema laboral actual: viable, difícil o imposible.</p></div>
 <div class="step p" style="--i:5"><p class="num">04</p><h3 class="h3">Lo que falta</h3><p class="small">Los silencios del programa y un balance con argumentos de ambos lados.</p></div>
 </div>
-<aside>Voy en cuatro pasos. Primero, el tablero: los datos y quién puede legislar en materia laboral. Segundo, las medidas, conectadas con el temario. Tercero, su encaje con el sistema actual. Y cuarto, lo que el programa no dice y un balance con argumentos a favor y en contra.</aside>
+<aside>Voy en cuatro pasos: el tablero, las medidas, su encaje con el sistema y, al final, lo que falta y un balance.</aside>
 </section>
 
 <section id="contexto" class="dark withsource" data-transition="fade">
+<div class="ill f" style="--i:6; left:128px; top:690px; width:1664px; height:200px"><svg aria-label="Gráfica de empleo que sube" width="1664" height="200" viewBox="0 0 1664 200" xmlns="http://www.w3.org/2000/svg"><path class="ln" pathLength="1" d="M0,190 H1664" fill="none" stroke="#183A52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M0,170 L200,150 L400,158 L600,120 L800,128 L1000,92 L1200,100 L1400,60 L1580,30" fill="none" stroke="#F2C230" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M1540,22 L1590,26 L1572,72" fill="none" stroke="#F2C230" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="200" cy="150" r="9" fill="#2FA6D6"/><circle cx="600" cy="120" r="9" fill="#2FA6D6"/><circle cx="1000" cy="92" r="9" fill="#2FA6D6"/><circle cx="1400" cy="60" r="9" fill="#2FA6D6"/></svg></div>
 <p class="eyebrow a" style="--i:0">EL PUNTO DE PARTIDA</p>
 <h2 class="head a" style="--i:1; width:1500px">Un programa de 100 acciones para un mercado que crece</h2>
 <div class="stats">
@@ -317,7 +329,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <div class="mapcol k3 p" style="--i:4"><h3 class="h3">Políticas pasivas: protección</h3><ul class="maplist"><li>16 · Ingreso Mínimo Vital compatible con trabajar</li><li>19 · Pensiones no contributivas</li></ul></div>
 <div class="mapcol k4 p" style="--i:5"><h3 class="h3">Políticas de demanda</h3><ul class="maplist"><li>46 · FP y FP dual</li><li>1 · Autorizaciones de trabajo</li><li>85 · Movilidad ordenada</li><li>87 · Retorno de emigrantes</li></ul></div>
 </div>
-<aside>He ordenado las medidas con la clasificación de los apuntes sobre políticas de empleo: políticas activas; medidas de fomento del empleo de tipo económico-financiero, como bonificaciones, exenciones y deducciones; políticas pasivas o de protección frente al desempleo; y políticas de demanda, donde los apuntes incluyen la formación profesional y la política migratoria. En cada medida veréis primero el texto literal del programa y después su análisis.</aside>
+<aside>He ordenado las medidas según los apuntes: políticas activas, fomento del empleo económico-financiero, políticas pasivas y políticas de demanda, como la FP y la migración. En cada medida veréis primero el texto literal y después su análisis.</aside>
 </section>
 
 <section id="m-empleo" data-transition="magic">
@@ -405,6 +417,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 </section>
 
 <section id="m-salarios" data-transition="magic">
+<div class="ill f" style="--i:5; left:1150px; top:775px; width:620px; height:175px"><svg aria-label="Monedas que crecen y flecha hacia arriba" width="620" height="175" viewBox="0 0 620 175" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="130" width="90" height="40" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path d="M40,148 H130" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M40,166 H130" stroke="#0F2433" stroke-width="2" opacity="0.5"/><ellipse cx="85" cy="130" rx="45" ry="10" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><rect x="170" y="100" width="90" height="70" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path d="M170,118 H260" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M170,136 H260" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M170,154 H260" stroke="#0F2433" stroke-width="2" opacity="0.5"/><ellipse cx="215" cy="100" rx="45" ry="10" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><rect x="300" y="70" width="90" height="100" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path d="M300,88 H390" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M300,106 H390" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M300,124 H390" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M300,142 H390" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M300,160 H390" stroke="#0F2433" stroke-width="2" opacity="0.5"/><ellipse cx="345" cy="70" rx="45" ry="10" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><rect x="430" y="40" width="90" height="130" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path d="M430,58 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,76 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,94 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,112 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,130 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,148 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><path d="M430,166 H520" stroke="#0F2433" stroke-width="2" opacity="0.5"/><ellipse cx="475" cy="40" rx="45" ry="10" fill="#F2C230" stroke="#0F2433" stroke-width="4"/><path class="ln" pathLength="1" d="M560,120 L560,10" fill="none" stroke="#2FA6D6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M530,40 L560,10 L590,40" fill="none" stroke="#2FA6D6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
 <div id="rail0" class="rail" style="left:1324px"></div>
 <div id="rail1" class="rail" style="left:1384px"></div>
 <div id="rail2" class="rail" style="left:1444px"></div>
@@ -442,10 +455,11 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Es una medida de fomento del empleo de tipo económico-financiero: bonificaciones en las cotizaciones y deducciones fiscales. Las subidas se pactarían en los convenios colectivos, los acuerdos entre sindicatos y empresas.</p></div>
 <div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill dura">Cuesta arriba</p><p class="txt">Se puede hacer con una ley del Estado, pero es difícil. La Seguridad Social tiene «caja única»: un solo fondo para toda España, así que lo que dejan de pagar las empresas canarias lo cubren las demás. Es caro. Y existe el «efecto peso muerto»: pagar por subidas que se habrían hecho igual.</p></div>
 </div>
-<aside>Es fomento del empleo económico-financiero: bonificaciones en cotizaciones y deducciones fiscales, ligadas a subidas pactadas en convenio. [CLIC] Es la más difícil. La Seguridad Social es una caja única para toda España, así que la rebaja la pagan las demás comunidades; es cara; y puede pagar subidas que se harían igual, lo que se llama efecto peso muerto.</aside>
+<aside>Es fomento del empleo económico-financiero: bonificaciones en cotizaciones y deducciones fiscales, ligadas a subidas pactadas en convenio. [CLIC] Es la más difícil. La Seguridad Social es una caja única para toda España, así que la rebaja la pagan las demás comunidades; es cara; y puede pagar subidas que se harían igual, lo que se llama efecto peso muerto. Ejemplo: un hotel de Tenerife que ya iba a subir el sueldo un 3 % por convenio cobraría igualmente la bonificación; el Estado pagaría una subida que se habría hecho de todos modos.</aside>
 </section>
 
 <section id="m-islas" data-transition="magic">
+<div class="ill f" style="--i:5; left:860px; top:780px; width:930px; height:170px"><svg aria-label="La Palma con volcán, La Gomera y El Hierro" width="930" height="170" viewBox="0 0 930 170" xmlns="http://www.w3.org/2000/svg"><path class="ln" pathLength="1" d="M0,150 q20,-12 40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0" fill="none" stroke="#2FA6D6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M60,140 C80,70 150,40 190,40 C230,45 260,90 280,140 Z" fill="#8DBF6A" stroke="#0F2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M120,58 L150,20 L178,56" fill="#B3471E" stroke="#0F2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M150,15 c-10,-10 10,-20 0,-30" fill="none" stroke="#0F2433" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M370,140 C390,95 450,80 500,90 C540,100 560,125 570,140 Z" fill="#8DBF6A" stroke="#0F2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M650,140 C665,110 720,100 760,112 C790,122 800,135 805,140 Z" fill="#8DBF6A" stroke="#0F2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><circle cx="860" cy="40" r="26" fill="#F2C230" stroke="#0F2433" stroke-width="4"/></svg></div>
 <div id="rail0" class="rail" style="left:1324px"></div>
 <div id="rail1" class="rail" style="left:1384px"></div>
 <div id="rail2" class="rail" style="left:1444px"></div>
@@ -656,8 +670,9 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 </section>
 
 <section id="semaforo" class="dark" data-transition="fade">
+<div class="ill p" style="--i:3; left:1680px; top:110px; width:112px; height:260px"><svg aria-label="Semáforo" width="112" height="260" viewBox="0 0 112 260" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="6" width="100" height="248" rx="30" fill="#0F2433" stroke="#F5F1E8" stroke-width="4"/><circle cx="56" cy="50" r="30" fill="#B3471E" stroke="#F5F1E8" stroke-width="3"/><circle cx="56" cy="130" r="30" fill="#F2C230" stroke="#F5F1E8" stroke-width="3"/><circle cx="56" cy="210" r="30" fill="#2FA6D6" stroke="#F5F1E8" stroke-width="3"/></svg></div>
 <p class="eyebrow a" style="--i:0">BALANCE DE VIABILIDAD</p>
-<h2 class="head a" style="--i:1; width:1600px">Ninguna es imposible; algunas van cuesta arriba</h2>
+<h2 class="head a" style="--i:1; width:1400px">Ninguna es imposible; algunas van cuesta arriba</h2>
 <div class="light">
 <div class="lcol a" style="--i:2"><p class="pill alta">Viabilidad alta</p><ul class="llist"><li>Planes de empleo (31, 45)</li><li>FP dual y becas (46, 47)</li><li>Autónomos y pymes (32, 33)</li><li>Autorizaciones de trabajo (1)</li><li>Discapacidad y retorno (20, 87)</li></ul></div>
 <div class="lcol fragment up"><p class="pill media">Viabilidad media</p><ul class="llist"><li>60 % del IRPF y 50 % de cuotas en las islas verdes (38)</li><li>IMV gestionado desde Canarias y compatible con trabajar (16)</li><li>Complementos que no resten de las PNC (19)</li></ul></div>
@@ -668,6 +683,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 </section>
 
 <section id="ausencias" class="sun" data-transition="fade">
+<div class="ill p" style="--i:3; left:1592px; top:96px; width:200px; height:210px"><svg aria-label="Contrato de trabajo con lupa" width="200" height="210" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg"><path d="M20,10 H130 L160,40 V190 H20 Z" fill="#FCFAF5" stroke="#0F2433" stroke-width="4" stroke-linejoin="round"/><path class="ln" pathLength="1" d="M130,10 V40 H160" fill="none" stroke="#0F2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M40,50 H110" fill="none" stroke="#0F2433" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M40,70 H140" fill="none" stroke="#0F2433" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M40,90 H90" fill="none" stroke="#0F2433" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><circle cx="120" cy="140" r="34" fill="#F2C230" fill-opacity="0.5" stroke="#0F2433" stroke-width="6"/><path class="ln" pathLength="1" d="M145,165 L182,200" fill="none" stroke="#0F2433" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
 <p class="eyebrow a" style="--i:0">LO QUE NO ESTÁ</p>
 <h2 class="head a" style="--i:1; width:1600px">Ni una línea sobre el contrato de trabajo</h2>
 <div class="chips">
@@ -679,10 +695,11 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <div class="chip p" style="--i:7"><h3 class="h3">Despido y periodo de prueba</h3></div>
 </div>
 <p class="lead after fragment up">Es coherente con el reparto de competencias, pero sus diputados votarán todas esas leyes en el Congreso.</p>
-<aside>Lo que no está: el programa no dice nada del contrato de trabajo ni de las relaciones colectivas. Nada sobre temporalidad, fijos discontinuos, huelga y servicios mínimos, ETT, salario mínimo, jornada o despido. [CLIC] Es coherente con que Canarias no legisla en lo laboral, pero sus diputados votarán esas leyes y el programa no dice qué defenderán.</aside>
+<aside>Lo que no está: el programa no dice nada del contrato de trabajo ni de las relaciones colectivas. Nada sobre temporalidad, fijos discontinuos, huelga y servicios mínimos, ETT, salario mínimo, jornada o despido. Qué es la temporalidad: el peso de los contratos temporales en el empleo. Según los apuntes, la regla es el contrato indefinido, que se presume, y el temporal solo cabe con causa: circunstancias de la producción o sustitución (art. 15 ET). En Canarias, con un empleo tan estacional, la figura clave es el fijo discontinuo, y el programa no dice nada. [CLIC] Es coherente con que Canarias no legisla en lo laboral, pero sus diputados votarán esas leyes y el programa no dice qué defenderán.</aside>
 </section>
 
 <section id="balance" data-transition="fade">
+<div class="ill p" style="--i:3; left:1592px; top:90px; width:200px; height:190px"><svg aria-label="Balanza" width="200" height="190" viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg"><path class="ln" pathLength="1" d="M100,20 V180" fill="none" stroke="#0F2433" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M60,180 H140" fill="none" stroke="#0F2433" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M20,50 H180" fill="none" stroke="#0F2433" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M20,50 L0,110 H40 Z" fill="#D6EEF7" stroke="#2FA6D6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path class="ln" pathLength="1" d="M180,50 L160,110 H200 Z" fill="#F3D9CF" stroke="#B3471E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><circle cx="100" cy="20" r="10" fill="#F2C230" stroke="#0F2433" stroke-width="3"/></svg></div>
 <p class="eyebrow a" style="--i:0">CRÍTICA</p>
 <h2 class="head a" style="--i:1">Argumentos a favor y en contra</h2>
 <div class="two">
@@ -703,6 +720,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 </section>
 
 <section id="cierre" class="dark">
+<div class="ill p" style="--i:4; left:1180px; top:70px; width:240px; height:230px"><svg aria-label="Urna con papeleta" width="240" height="230" viewBox="0 0 240 230" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="90" width="200" height="130" rx="10" fill="#183A52" stroke="#F5F1E8" stroke-width="4"/><path d="M70,90 H170" stroke="#F2C230" stroke-width="8" stroke-linecap="round"/><rect x="90" y="10" width="60" height="90" fill="#FCFAF5" stroke="#0F2433" stroke-width="3" transform="rotate(-8 120 55)"/><path class="ln" pathLength="1" d="M100,40 L112,52 L135,28" fill="none" stroke="#2FA6D6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
 <div class="stripe st1 d" style="--i:0"></div>
 <div class="stripe st2 d" style="--i:1"></div>
 <div class="stripe st3 d" style="--i:2"></div>
@@ -712,7 +730,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
 <p class="lead a" style="--i:4; margin-top:40px; width:1180px">Pide recursos, incentivos y competencias de ejecución. Su viabilidad depende más de la aritmética parlamentaria que del Estatuto de los Trabajadores.</p>
 <p class="ask a" style="--i:6">¿Preguntas?</p>
 </div>
-<aside>Conclusión: las medidas laborales de «Defiende Canarias» son política de empleo, no Derecho del Trabajo en sentido estricto. Piden fondos, incentivos y competencias de ejecución, y casi todo encaja en el sistema actual precisamente porque no toca el contrato, la huelga ni el despido. Su viabilidad depende más de la aritmética parlamentaria del 29 de noviembre que del Estatuto de los Trabajadores. Muchas gracias; quedo abierto a vuestras preguntas.</aside>
+<aside>Conclusión: las medidas laborales de «Defiende Canarias» son política de empleo, no Derecho del Trabajo en sentido estricto. Piden fondos, incentivos y competencias de ejecución, y casi todo encaja en el sistema actual precisamente porque no toca el contrato, la huelga ni el despido. Su viabilidad depende más de la aritmética parlamentaria del 29 de noviembre que del Estatuto de los Trabajadores. Lo más sorprendente, y lo que menos me convence: Un programa para elegir a quienes hacen las leyes laborales no propone nada sobre el contrato de trabajo, en la comunidad con el empleo más estacional. Y choca con el temario: la reforma apuesta por el empleo indefinido, pero sus bonificaciones no lo exigen, y se queda en promover empleo sin proteger al trabajador. Muchas gracias; quedo abierto a vuestras preguntas.</aside>
 </section>
 
 </div></div>
