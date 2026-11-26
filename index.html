@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Defiende Canarias: las medidas laborales a examen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;600&display=swap">
+<style>
+
+* { margin: 0; }
+html, body { height: 100%; background: #0B1A25; overflow: hidden; }
+body { font-family: 'Inter', Arial, sans-serif; }
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; transform-origin: center center; overflow: hidden; flex: none; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+#stage > section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: none; overflow: hidden; }
+#stage > section.on { display: block; }
+#stage > section.leaving { display: block; pointer-events: none; }
+aside { display: none !important; }
+.xicon { display: block; }
+.ic .xicon { width: 32px; height: 32px; color: var(--sun); }
+.card.c3 .ic .xicon { color: var(--ink); }
+x-shape { display: block; }
+x-shape[kind="arrow-right"] { clip-path: polygon(0 30%, 58% 30%, 58% 0, 100% 50%, 58% 100%, 58% 70%, 0 70%); }
+#hud { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.08); z-index: 10; }
+#bar { height: 100%; width: 0; background: #F2C230; transition: width .4s ease; }
+#count { position: fixed; right: 18px; bottom: 14px; font: 600 13px Inter, Arial, sans-serif; color: rgba(255,255,255,.55); z-index: 10; letter-spacing: 1px; }
+#help { position: fixed; left: 18px; bottom: 14px; font: 13px Inter, Arial, sans-serif; color: rgba(255,255,255,.45); z-index: 10; transition: opacity .6s; }
+#notes { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(1100px, 92vw); max-height: 38vh; overflow: auto; background: rgba(11,26,37,.94); color: #F5F1E8; border-top: 4px solid #F2C230; padding: 18px 24px; font: 18px/1.5 Inter, Arial, sans-serif; border-radius: 6px; z-index: 20; display: none; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+#notes.show { display: block; }
+#notes b { color: #2FA6D6; }
+body.hidecursor { cursor: none; }
+
+:root {
+  --ink: #0F2433;
+  --ink2: #183A52;
+  --cream: #F5F1E8;
+  --paper: #FCFAF5;
+  --blue: #0A6E95;
+  --sky: #2FA6D6;
+  --sun: #F2C230;
+  --orange: #B3471E;
+  --soft: #3D4B57;
+  --softd: #C3D5E0;
+}
+
+section {
+  padding: 128px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Inter', Arial, sans-serif;
+  box-sizing: border-box;
+}
+section.dark { background: var(--ink); color: var(--cream); }
+section.sun { background: var(--sun); color: var(--ink); }
+section.withsource { padding: 128px 128px 160px 128px; }
+
+h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
+
+.title { font-size: 120px; font-weight: 700; line-height: 1.0; letter-spacing: -2px; }
+.head { font-size: 72px; font-weight: 700; line-height: 1.05; letter-spacing: -1px; }
+.h3 { font-size: 32px; font-weight: 600; line-height: 1.2; margin: 0 0 12px 0; }
+.dark .head { color: var(--cream); }
+
+.eyebrow { font-size: 24px; font-weight: 600; letter-spacing: 4px; color: var(--blue); margin: 0 0 24px 0; }
+.dark .eyebrow { color: var(--sun); }
+.sun .eyebrow { color: var(--ink); }
+
+.lead { font-size: 32px; line-height: 1.4; color: var(--soft); margin: 0; }
+.dark .lead { color: var(--softd); }
+.sun .lead { color: var(--ink); }
+
+.hl { color: var(--sun); }
+.hlb { color: var(--sky); }
+
+/* Portada */
+.stripe { position: absolute; top: 0; width: 112px; height: 1080px; }
+.st1 { left: 1440px; background: var(--cream); }
+.st2 { left: 1560px; background: var(--sky); }
+.st3 { left: 1680px; background: var(--sun); }
+.cover-text { width: 1260px; display: flex; flex-direction: column; justify-content: center; height: 824px; }
+.credit { position: absolute; left: 128px; bottom: 64px; width: 1200px; font-size: 24px; color: var(--softd); margin: 0; }
+
+/* Tarjetas de medida */
+.cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; margin-top: 48px; }
+.card { background: var(--paper); border-top: 8px solid var(--sky); padding: 36px 36px 40px 36px; box-sizing: border-box; }
+.card.c2 { border-top: 8px solid var(--ink); }
+.card.c3 { background: var(--ink); border-top: 8px solid var(--sun); }
+.label { font-size: 24px; font-weight: 600; letter-spacing: 2px; color: var(--blue); margin: 0 0 16px 0; }
+.card.c3 .label { color: var(--sun); }
+.txt { font-size: 26px; line-height: 1.4; color: var(--soft); margin: 0; }
+.card.c3 .txt { color: var(--softd); }
+
+.pill { display: inline-block; font-size: 24px; font-weight: 600; padding: 8px 22px; border-radius: 40px; margin: 0 0 20px 0; }
+.pill.alta { background: var(--sky); color: var(--ink); }
+.pill.media { background: var(--sun); color: var(--ink); }
+.pill.dura { background: var(--orange); color: var(--paper); }
+
+/* Guion */
+.steps { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; margin-top: 72px; }
+.step { border-top: 4px solid var(--ink); padding-top: 28px; }
+.num { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 72px; font-weight: 700; color: var(--blue); margin: 0 0 16px 0; line-height: 1; }
+.small { font-size: 24px; line-height: 1.4; color: var(--soft); margin: 0; }
+
+/* Cifras */
+.stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; margin-top: 80px; }
+.stat { border-left: 6px solid var(--sky); padding-left: 32px; }
+.big { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 120px; font-weight: 700; line-height: 1; color: var(--sun); margin: 0 0 20px 0; }
+.statlabel { font-size: 28px; line-height: 1.35; color: var(--softd); margin: 0; }
+.source { position: absolute; left: 128px; bottom: 64px; width: 1664px; font-size: 24px; color: var(--soft); margin: 0; }
+.dark .source { color: var(--softd); }
+
+/* Diagrama de la regla */
+.flow { display: flex; align-items: center; gap: 24px; margin-top: 64px; }
+.node { flex: 1; background: var(--paper); border-top: 8px solid var(--sky); padding: 36px; box-sizing: border-box; }
+.node.n2 { border-top: 8px solid var(--ink); }
+.node.n3 { border-top: 8px solid var(--sun); }
+.arrowbox { width: 72px; height: 40px; }
+.arrowbox x-shape { width: 72px; height: 40px; background: var(--ink); }
+.punch { font-size: 32px; line-height: 1.4; color: var(--ink); font-weight: 600; margin: 56px 0 0 0; border-left: 6px solid var(--sun); padding-left: 28px; }
+
+/* Mapa */
+.map { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px; margin-top: 48px; }
+.mapcol { background: var(--paper); padding: 28px; border-top: 8px solid var(--sky); box-sizing: border-box; }
+.mapcol.k2 { border-top: 8px solid var(--sun); }
+.mapcol.k3 { border-top: 8px solid var(--ink); }
+.mapcol.k4 { border-top: 8px solid var(--orange); }
+.mapcol .h3 { font-size: 28px; }
+.maplist { font-size: 24px; line-height: 1.4; color: var(--soft); margin: 8px 0 0 0; padding-left: 28px; }
+.maplist li { margin: 0 0 10px 0; }
+
+/* Semáforo */
+.light { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; margin-top: 48px; }
+.lcol { background: var(--ink2); padding: 32px; box-sizing: border-box; }
+.lcol .pill { margin-bottom: 24px; }
+.llist { font-size: 26px; line-height: 1.4; color: var(--cream); margin: 0; padding-left: 30px; }
+.llist li { margin: 0 0 12px 0; }
+.note { font-size: 26px; line-height: 1.4; color: var(--softd); margin: 40px 0 0 0; }
+
+/* Ausencias */
+.chips { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 48px; }
+.chip { background: var(--ink); padding: 32px; box-sizing: border-box; }
+.chip .h3 { color: var(--sun); font-size: 30px; margin: 0; }
+.sun .lead.after { margin-top: 48px; font-weight: 600; }
+
+/* Balance */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
+.side { padding: 36px 40px; box-sizing: border-box; }
+.side.pro { background: var(--paper); border-top: 8px solid var(--sky); }
+.side.con { background: var(--paper); border-top: 8px solid var(--orange); }
+.side .h3 { margin-bottom: 20px; }
+.arg { font-size: 26px; line-height: 1.4; color: var(--soft); margin: 0 0 18px 0; padding-left: 24px; border-left: 4px solid var(--sky); }
+.con .arg { border-left: 4px solid var(--orange); }
+
+/* Cierre */
+.closing { display: flex; flex-direction: column; justify-content: center; height: 824px; width: 1260px; }
+.ask { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 72px; font-weight: 700; color: var(--sun); margin: 56px 0 0 0; }
+
+/* Movimiento */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(48px); }
+  to { opacity: 1; transform: translateY(0px); }
+}
+@keyframes slide {
+  from { opacity: 0; transform: translateX(-80px); }
+  to { opacity: 1; transform: translateX(0px); }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes drop {
+  from { transform: translateY(-1080px); }
+  to { transform: translateY(0px); }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0px) scale(1); }
+}
+
+.a { animation: rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+.s { animation: slide 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+.f { animation: fade 500ms ease both; animation-delay: calc(var(--i, 0) * 90ms); }
+.d { animation: drop 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 110ms); }
+.p { animation: pop 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 80ms); }
+
+.fragment { opacity: 0; transform: translateY(24px); transition: opacity 450ms ease, transform 450ms ease; }
+.fragment.visible { opacity: 1; transform: translateY(0px); }
+
+/* ---- Diapositivas de medida: capa extra de movimiento ---- */
+.bignum { position: absolute; left: 880px; top: 20px; width: 912px; text-align: right; white-space: nowrap; font-family: 'Space Grotesk', Arial, sans-serif; font-size: 300px; font-weight: 700; line-height: 1; letter-spacing: -12px; color: #E6DDCA; margin: 0; }
+.rail { position: absolute; top: 72px; width: 48px; height: 8px; background: #D9D2C3; border-radius: 4px; }
+.railon { position: absolute; top: 72px; width: 48px; height: 8px; background: var(--blue); border-radius: 4px; }
+.uline { width: 140px; height: 8px; background: var(--sun); margin: 28px 0 0 0; }
+.card { box-shadow: 0 12px 40px rgba(15, 36, 51, 0.08); }
+.lrow { display: flex; align-items: center; gap: 16px; margin: 0 0 20px 0; }
+.lrow .label { margin: 0; }
+.ic { width: 56px; height: 56px; border-radius: 28px; background: var(--ink); display: flex; align-items: center; justify-content: center; }
+.ic x-icon { width: 40px; height: 40px; color: var(--sun); }
+.card.c3 .ic { background: var(--sun); }
+.card.c3 .ic x-icon { color: var(--ink); }
+
+@keyframes bnin {
+  from { opacity: 0; transform: translateX(160px); }
+  to { opacity: 1; transform: translateX(0px); }
+}
+.bn { animation: bnin 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* Revelado con máscara */
+.mask { overflow: hidden; }
+@keyframes reveal {
+  from { transform: translateY(170px); }
+  to { transform: translateY(0px); }
+}
+@keyframes revealL {
+  from { transform: translateY(290px); }
+  to { transform: translateY(0px); }
+}
+.rv { animation: reveal 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+.rvl { animation: revealL 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+
+/* Pasos con clic */
+.fragment.up { transform: translateY(70px); transition: opacity 450ms ease, transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+.fragment.up.visible { transform: translateY(0px); }
+.fragment.stamp { transform: translateY(30px) scale(0.88); transition: opacity 400ms ease, transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.fragment.stamp.visible { transform: translateY(0px) scale(1); }
+
+/* ---- Texto literal del programa + tarjetas superpuestas ---- */
+.quotes { display: grid; gap: 28px; margin-top: 40px; }
+.quotes.q1 { grid-template-columns: 1fr; }
+.quotes.q2 { grid-template-columns: 1fr 1fr; }
+.quotes.q3 { grid-template-columns: 1fr 1fr 1fr; }
+.qbox { background: #EDE6D6; border-left: 8px solid var(--sun); padding: 28px 32px; box-sizing: border-box; }
+.qnum { font-size: 24px; font-weight: 600; letter-spacing: 2px; color: var(--blue); margin: 0 0 12px 0; }
+.qtxt { font-size: 30px; line-height: 1.4; color: var(--ink); margin: 0; }
+.q1 .qtxt { font-size: 38px; }
+.q3 .qtxt { font-size: 27px; }
+.ov { position: absolute; bottom: 128px; width: 800px; box-sizing: border-box; box-shadow: 0 24px 60px rgba(15, 36, 51, 0.28); }
+.ov.left { left: 128px; }
+.ov.right { left: 992px; }
+
+/* Diapositiva de análisis de cada medida */
+.acols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px; }
+.card.big2 { padding: 44px 48px 52px 48px; }
+.card.big2 .txt { font-size: 32px; line-height: 1.4; }
+.card.big2 .lrow { margin-bottom: 28px; }
+.card.big2 .pill { font-size: 28px; }
+
+/* Icono ilustrativo de cada medida y etiquetas de datos clave */
+.mico { position: absolute; left: 1632px; top: 132px; width: 160px; height: 160px; border-radius: 80px; background: var(--sun); display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 40px rgba(15, 36, 51, 0.18); }
+.krow { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+.krow .uline { margin: 0; }
+.kchip { font-size: 24px; font-weight: 600; color: var(--sun); background: var(--ink); padding: 6px 20px; border-radius: 30px; margin: 0; white-space: nowrap; }
+
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+<section id="cover" class="dark" data-transition="push">
+<div class="stripe st1 d" style="--i:0"></div>
+<div class="stripe st2 d" style="--i:1"></div>
+<div class="stripe st3 d" style="--i:2"></div>
+<div class="cover-text">
+<p class="eyebrow a" style="--i:1">DERECHO DEL TRABAJO · ELECCIONES GENERALES DEL 29N</p>
+<div class="mask"><h1 class="title rvl" style="--i:2">Defiende Canarias<br><span class="hl">¿y el trabajo?</span></h1></div>
+<p class="lead a" style="--i:4; margin-top:40px; width:1100px">Las medidas laborales del programa de Coalición Canaria y Primero Canarias</p>
+</div>
+<p class="credit f" style="--i:6">[Tu nombre] · Derecho del Trabajo, 2.º parcial</p>
+<aside>Buenos días. Presento el programa «Defiende Canarias», con el que Coalición Canaria y Primero Canarias concurren a las elecciones generales del 29 de noviembre. No lo analizo como un mitin, sino desde la asignatura: qué medidas laborales contiene, con qué parte del temario conectan y si encajan en el sistema laboral actual.</aside>
+</section>
+
+<section id="ruta" data-transition="fade">
+<p class="eyebrow a" style="--i:0">GUION</p>
+<h2 class="head a" style="--i:1; width:1400px">Cuatro pasos para leer el programa</h2>
+<div class="steps">
+<div class="step p" style="--i:2"><p class="num">01</p><h3 class="h3">El tablero</h3><p class="small">Datos de partida y quién puede legislar en materia laboral.</p></div>
+<div class="step p" style="--i:3"><p class="num">02</p><h3 class="h3">Las medidas</h3><p class="small">Una quincena de las 100 acciones tocan empleo, salarios o protección.</p></div>
+<div class="step p" style="--i:4"><p class="num">03</p><h3 class="h3">El encaje</h3><p class="small">Cada medida frente al sistema laboral actual: viable, difícil o imposible.</p></div>
+<div class="step p" style="--i:5"><p class="num">04</p><h3 class="h3">Lo que falta</h3><p class="small">Los silencios del programa y un balance con argumentos de ambos lados.</p></div>
+</div>
+<aside>Voy en cuatro pasos. Primero, el tablero: los datos y quién puede legislar en materia laboral. Segundo, las medidas, conectadas con el temario. Tercero, su encaje con el sistema actual. Y cuarto, lo que el programa no dice y un balance con argumentos a favor y en contra.</aside>
+</section>
+
+<section id="contexto" class="dark withsource" data-transition="fade">
+<p class="eyebrow a" style="--i:0">EL PUNTO DE PARTIDA</p>
+<h2 class="head a" style="--i:1; width:1500px">Un programa de 100 acciones para un mercado que crece</h2>
+<div class="stats">
+<div class="stat s" style="--i:3"><div class="mask"><p class="big rv" style="--i:4">≈15</p></div><p class="statlabel">de las 100 acciones del programa tocan empleo, salarios o protección social</p></div>
+<div class="stat s" style="--i:4"><div class="mask"><p class="big rv" style="--i:5">+38.100</p></div><p class="statlabel">ocupados en Canarias en el 3.er trimestre de 2026: la mayor subida de España (+3,67 %)</p></div>
+<div class="stat s" style="--i:5"><div class="mask"><p class="big rv" style="--i:6">10,18 %</p></div><p class="statlabel">tasa de paro en España en el mismo trimestre, con 2,59 millones de parados</p></div>
+</div>
+<p class="source f" style="--i:7">Fuentes: programa «Defiende Canarias» (9/11/2026); EPA 3T 2026 (INE), datos difundidos por RTVC.</p>
+<aside>El programa tiene cien acciones y unas quince tocan el empleo. Parte de un mercado que crece: en el tercer trimestre de 2026 Canarias fue la comunidad que más empleo creó, 38.100 ocupados más, con un paro estatal del 10,18 %. Los problemas son de fondo: estacionalidad, turismo, salarios bajos y paro juvenil.</aside>
+</section>
+
+<section id="regla" data-transition="push">
+<p class="eyebrow a" style="--i:0">LA REGLA DEL JUEGO · ART. 149.1.7.ª CE</p>
+<h2 class="head a" style="--i:1; width:1600px">El Estado legisla, Canarias ejecuta y el partido negocia</h2>
+<div class="flow">
+<div class="node a" style="--i:2"><h3 class="h3">Diputados de CC</h3><p class="small">Votos en la investidura, en los Presupuestos y en la convalidación de decretos-ley.</p></div>
+<div class="arrowbox f" style="--i:3"><x-shape kind="arrow-right"></x-shape></div>
+<div class="node n2 a" style="--i:3"><h3 class="h3">Cortes Generales</h3><p class="small">Legislación laboral exclusiva del Estado: ET, Ley de Empleo, Seguridad Social.</p></div>
+<div class="arrowbox f" style="--i:4"><x-shape kind="arrow-right"></x-shape></div>
+<div class="node n3 a" style="--i:4"><h3 class="h3">Gobierno de Canarias</h3><p class="small">Ejecuta con el Servicio Canario de Empleo, coordinado por el servicio estatal (Ley de Empleo, arts. 18 y 20).</p></div>
+</div>
+<p class="punch fragment up">Por eso el programa pide fondos, bonificaciones y traspasos, no reformas del Estatuto de los Trabajadores.</p>
+<aside>La clave es que, según la Constitución, la legislación laboral es competencia exclusiva del Estado y las comunidades solo la ejecutan. Canarias aplica las políticas de empleo con el Servicio Canario de Empleo, coordinado por el estatal, pero no puede cambiar el Estatuto de los Trabajadores. Coalición Canaria solo puede negociar con sus votos en el Congreso. [CLIC] Por eso el programa usa verbos como «reclamaremos» o «exigiremos».</aside>
+</section>
+
+<section id="mapa" data-transition="push">
+<p class="eyebrow a" style="--i:0">MAPA DE MEDIDAS</p>
+<h2 class="head a" style="--i:1">Cuatro tipos de política, según el temario</h2>
+<div class="map">
+<div class="mapcol p" style="--i:2"><h3 class="h3">Políticas activas de empleo</h3><ul class="maplist"><li>31 · Plan Integral de Empleo de Canarias</li><li>45 · Plan para menores de 35</li><li>20 · Accesibilidad y discapacidad</li></ul></div>
+<div class="mapcol k2 p" style="--i:3"><h3 class="h3">Fomento del empleo económico-financiero</h3><ul class="maplist"><li>36 · Bonificar subidas salariales</li><li>38 · IRPF y cuotas en las islas verdes</li><li>32 · Autónomos</li><li>33 · Pymes y cooperativas</li></ul></div>
+<div class="mapcol k3 p" style="--i:4"><h3 class="h3">Políticas pasivas: protección</h3><ul class="maplist"><li>16 · Ingreso Mínimo Vital compatible con trabajar</li><li>19 · Pensiones no contributivas</li></ul></div>
+<div class="mapcol k4 p" style="--i:5"><h3 class="h3">Políticas de demanda</h3><ul class="maplist"><li>46 · FP y FP dual</li><li>1 · Autorizaciones de trabajo</li><li>85 · Movilidad ordenada</li><li>87 · Retorno de emigrantes</li></ul></div>
+</div>
+<aside>He ordenado las medidas con la clasificación de los apuntes sobre políticas de empleo: políticas activas; medidas de fomento del empleo de tipo económico-financiero, como bonificaciones, exenciones y deducciones; políticas pasivas o de protección frente al desempleo; y políticas de demanda, donde los apuntes incluyen la formación profesional y la política migratoria. En cada medida veréis primero el texto literal del programa y después su análisis.</aside>
+</section>
+
+<section id="m-empleo" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Maletín de trabajo" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></g></svg></div>
+<div id="railon" class="railon" style="left:1324px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 1 DE 8 · ACCIONES 31 Y 45 · POLÍTICAS ACTIVAS</p>
+<h2 class="head s" style="--i:1; width:1600px">Planes de empleo para islas y jóvenes</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q2">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 31 · TEXTO LITERAL</p><p class="qtxt">«<b>Planes de empleo hasta reducir la desigualdad.</b> Defenderemos la financiación del Plan Integral de Empleo de Canarias y de los programas específicos previstos en el REF mientras la situación del empleo en Canarias siga en clara desventaja respecto a la media estatal. Priorizaremos a quienes encuentran más dificultades para acceder a un empleo y vincularemos la formación a oportunidades reales de trabajo estable y mejores salarios.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 45 · TEXTO LITERAL</p><p class="qtxt">«<b>Un plan de empleo para los jóvenes de Canarias.</b> Reclamaremos la aportación estatal al plan cuatrienal de empleo para menores de 35 años previsto en la propuesta de Decreto Canarias. Se acordarán las actuaciones con las instituciones canarias y los agentes sociales, contando con la participación de la juventud. El seguimiento deberá evaluar el acceso a empleos estables y la reducción de la desventaja respecto a la media estatal.»</p></div>
+</div>
+<aside>En pantalla tenéis el texto literal de las acciones 31 y 45. En resumen: que el Estado siga financiando el Plan Integral de Empleo de Canarias y aporte fondos a un plan de cuatro años para menores de 35.</aside>
+</section>
+
+<section id="m-empleo-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Maletín de trabajo" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></g></svg></div>
+<div id="railon" class="railon" style="left:1324px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 1 DE 8 · ANÁLISIS · ACCIONES 31 Y 45 · POLÍTICAS ACTIVAS</p>
+<h2 class="head s" style="--i:1; width:1600px">Planes de empleo para islas y jóvenes</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">Plan Integral de Empleo (REF)</p><p class="kchip">Menores de 35</p><p class="kchip">Plan de 4 años</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Son políticas activas de empleo: buscan más empleo y de más calidad. El plan para menores de 35 es además una medida de fomento selectiva, porque se dirige a un colectivo concreto. Se aplican con el Servicio Canario de Empleo, coordinado por el servicio estatal (Ley de Empleo, arts. 18 y 20).</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill alta">Viabilidad alta</p><p class="txt">Es fácil de hacer: no hay que cambiar ninguna ley, solo que el Estado ponga el dinero en los Presupuestos Generales, la ley que fija cada año en qué se gasta. El problema: si no se aprueban Presupuestos, no hay dinero. Y crear empleo no asegura que sea estable.</p></div>
+</div>
+<aside>Son políticas activas de empleo; el plan para menores de 35 es además selectivo, porque se dirige a un colectivo. Las aplica el Servicio Canario de Empleo. [CLIC] Es fácil: basta con dinero en los Presupuestos. El riesgo es que no se aprueben, y que el empleo creado no sea estable.</aside>
+</section>
+
+<section id="m-fp" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Birrete de graduación" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/><path d="M22 10v6"/></g></svg></div>
+<div id="railon" class="railon" style="left:1384px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 2 DE 8 · ACCIONES 46 Y 47 · POLÍTICA DE DEMANDA</p>
+<h2 class="head s" style="--i:1; width:1600px">FP dual, primeras experiencias y becas</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q2">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 46 · TEXTO LITERAL</p><p class="qtxt">«<b>Formación conectada con el empleo y el retorno.</b> Reclamaremos financiación estatal para la formación profesional y la formación dual, incluidas las infraestructuras y el apoyo a las empresas que participan en la formación. Reforzaremos las primeras experiencias laborales de calidad y las vías para el retorno del talento. Orientaremos la cualificación profesional hacia las energías renovables, el almacenamiento energético, la economía azul, la industria, la digitalización, el sector audiovisual, la rehabilitación, los cuidados y los combustibles sostenibles.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 47 · TEXTO LITERAL</p><p class="qtxt">«<b>Becas que tengan en cuenta dónde se vive.</b> Defenderemos una formación profesional y una universidad accesibles. Exigiremos el cumplimiento y el refuerzo de las previsiones del REF para las becas de quienes deben desplazarse porque sus estudios no se ofrecen en su isla. La distancia no debe reducir las posibilidades de elegir una formación.»</p></div>
+</div>
+<aside>Las acciones 46 y 47 piden financiación estatal para la FP y la FP dual, primeras experiencias laborales de calidad, retorno del talento y becas para quien tiene que estudiar fuera de su isla.</aside>
+</section>
+
+<section id="m-fp-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Birrete de graduación" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/><path d="M22 10v6"/></g></svg></div>
+<div id="railon" class="railon" style="left:1384px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 2 DE 8 · ANÁLISIS · ACCIONES 46 Y 47 · POLÍTICA DE DEMANDA</p>
+<h2 class="head s" style="--i:1; width:1600px">FP dual, primeras experiencias y becas</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">FP dual</p><p class="kchip">Becas del REF</p><p class="kchip">Retorno del talento</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">La formación profesional es una política de demanda de empleo y es clave en el nuevo modelo de contratación. La FP dual se hace con el contrato de formación en alternancia: la persona trabaja y estudia a la vez.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill alta">Viabilidad alta</p><p class="txt">No hay obstáculo legal: encaja con la Ley de FP de 2022 y con el art. 11 ET. El problema es práctico: la FP dual necesita empresas con alguien que enseñe al aprendiz, un tutor, y en Canarias casi todas son muy pequeñas o trabajan solo por temporadas.</p></div>
+</div>
+<aside>La FP es una política de demanda de empleo, y la FP dual se hace con el contrato de formación en alternancia: se trabaja y se estudia a la vez. [CLIC] No hay obstáculo legal. El problema es práctico: hacen falta empresas con tutores, y en Canarias casi todas son pequeñas o de temporada.</aside>
+</section>
+
+<section id="m-salarios" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Símbolo del euro" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7a6.5 6.5 0 1 0 0 10"/><path d="M4 10h10"/><path d="M4 14h10"/></g></svg></div>
+<div id="railon" class="railon" style="left:1444px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 3 DE 8 · ACCIÓN 36 · FOMENTO DEL EMPLEO</p>
+<h2 class="head s" style="--i:1; width:1600px">Bonificar las subidas salariales</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q1">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 36 · TEXTO LITERAL</p><p class="qtxt">«<b>Mejorar los salarios con medidas específicas para Canarias.</b> Reclamaremos al Estado incentivos fiscales y bonificaciones en las cotizaciones ligados a mejoras salariales pactadas y a la productividad de las empresas canarias. Defenderemos también las medidas dirigidas a las retribuciones públicas más bajas. Su diseño se acordará con el Gobierno de Canarias y los agentes sociales, y se evaluará por su efecto sobre la renta de quienes trabajan.»</p></div>
+</div>
+<aside>La acción 36 es, a mi juicio, la más ambiciosa y la más difícil: incentivos fiscales y bonificaciones en las cotizaciones para las empresas canarias que pacten subidas salariales.</aside>
+</section>
+
+<section id="m-salarios-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Símbolo del euro" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7a6.5 6.5 0 1 0 0 10"/><path d="M4 10h10"/><path d="M4 14h10"/></g></svg></div>
+<div id="railon" class="railon" style="left:1444px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 3 DE 8 · ANÁLISIS · ACCIÓN 36 · FOMENTO DEL EMPLEO</p>
+<h2 class="head s" style="--i:1; width:1600px">Bonificar las subidas salariales</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">Incentivos fiscales</p><p class="kchip">Bonificación de cotizaciones</p><p class="kchip">Pactado en convenio</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Es una medida de fomento del empleo de tipo económico-financiero: bonificaciones en las cotizaciones y deducciones fiscales. Las subidas se pactarían en los convenios colectivos, los acuerdos entre sindicatos y empresas.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill dura">Cuesta arriba</p><p class="txt">Se puede hacer con una ley del Estado, pero es difícil. La Seguridad Social tiene «caja única»: un solo fondo para toda España, así que lo que dejan de pagar las empresas canarias lo cubren las demás. Es caro. Y existe el «efecto peso muerto»: pagar por subidas que se habrían hecho igual.</p></div>
+</div>
+<aside>Es fomento del empleo económico-financiero: bonificaciones en cotizaciones y deducciones fiscales, ligadas a subidas pactadas en convenio. [CLIC] Es la más difícil. La Seguridad Social es una caja única para toda España, así que la rebaja la pagan las demás comunidades; es cara; y puede pagar subidas que se harían igual, lo que se llama efecto peso muerto.</aside>
+</section>
+
+<section id="m-islas" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Sol sobre el mar" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M2 16c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.5 5-1"/><path d="M2 20.5c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.5 5-1"/></g></svg></div>
+<div id="railon" class="railon" style="left:1504px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 4 DE 8 · ACCIÓN 38 · FOMENTO DEL EMPLEO</p>
+<h2 class="head s" style="--i:1; width:1600px">Islas verdes: IRPF y cuotas</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q1">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 38 · TEXTO LITERAL</p><p class="qtxt">«<b>Una fiscalidad que ayude a permanecer en las islas verdes.</b> Defenderemos las medidas de la propuesta de Decreto Canarias para mantener la deducción del 60 % en el IRPF aplicable en La Palma y extenderla a La Gomera y El Hierro. Reclamaremos también la bonificación del 50 % de las cuotas empresariales de la Seguridad Social en las tres islas para los contratos previstos en esa propuesta. Su finalidad será sostener el empleo, la actividad económica y la población.»</p></div>
+</div>
+<aside>La acción 38 se centra en La Palma, La Gomera y El Hierro: mantener y extender la deducción del 60 % del IRPF y bonificar la mitad de las cuotas empresariales a la Seguridad Social.</aside>
+</section>
+
+<section id="m-islas-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Sol sobre el mar" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M2 16c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.5 5-1"/><path d="M2 20.5c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.5 5-1"/></g></svg></div>
+<div id="railon" class="railon" style="left:1504px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 4 DE 8 · ANÁLISIS · ACCIÓN 38 · FOMENTO DEL EMPLEO</p>
+<h2 class="head s" style="--i:1; width:1600px">Islas verdes: IRPF y cuotas</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">−60 % IRPF</p><p class="kchip">−50 % cuotas empresariales</p><p class="kchip">La Palma · La Gomera · El Hierro</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Es fomento del empleo económico-financiero: deducciones en el IRPF, el impuesto de los trabajadores, y bonificaciones en las cotizaciones, lo que paga la empresa a la Seguridad Social. Refleja la tensión entre proteger al trabajador y promover el empleo.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill media">Viabilidad media</p><p class="txt">Ya existe algo parecido: La Palma tiene esta rebaja desde 2023, tras el volcán, y Ceuta y Melilla pagan menos cotizaciones desde 2004. El problema: hay que renovarlo por ley cada cierto tiempo, y la UE vigila las «ayudas de Estado», ayudas públicas a empresas que pueden falsear la competencia.</p></div>
+</div>
+<aside>Es fomento del empleo económico-financiero: menos IRPF para los trabajadores y menos cotizaciones para las empresas. [CLIC] Hay precedentes: La Palma desde 2023 y Ceuta y Melilla desde 2004. Pero hay que renovarlo por ley, y la UE vigila estas ayudas a empresas porque pueden falsear la competencia.</aside>
+</section>
+
+<section id="m-autonomos" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Pequeño comercio" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v1.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 12.5V21h14v-8.5"/><path d="M10 21v-5h4v5"/></g></svg></div>
+<div id="railon" class="railon" style="left:1564px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 5 DE 8 · ACCIONES 32, 33 Y 41 · AUTÓNOMOS Y PYMES</p>
+<h2 class="head s" style="--i:1; width:1600px">Autónomos, pymes y relevo en el campo</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q3">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 32 · TEXTO LITERAL</p><p class="qtxt">«<b>Apoyo a los autónomos.</b> Reforzaremos las ayudas estatales a quienes empiezan una actividad por cuenta propia y a los autónomos con menores rendimientos. Los instrumentos de apoyo deben ajustarse a las condiciones en las que se trabaja y se emprende en las islas.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 33 · TEXTO LITERAL</p><p class="qtxt">«<b>Pequeñas empresas con más oportunidades.</b> Adaptaremos los programas estatales de digitalización, innovación y financiación al tamaño y a los costes logísticos de la microempresa canaria. Defenderemos condiciones que permitan avanzar al comercio, la industria, las pequeñas empresas y las cooperativas que sostienen la economía de nuestros pueblos y barrios.»</p></div>
+<div class="qbox a" style="--i:5"><p class="qnum">ACCIÓN 41 · TEXTO LITERAL</p><p class="qtxt">«<b>Suelo agrícola y relevo generacional.</b> Reclamaremos financiación estatal y europea para incorporar jóvenes a la agricultura, la ganadería y la pesca y dar continuidad a estas actividades. El apoyo a la producción local deberá contribuir a mantener el suelo agrícola en uso y a reforzar nuestra soberanía alimentaria, respetando las competencias canarias de ordenación del territorio.»</p></div>
+</div>
+<aside>Las acciones 32, 33 y 41 se dirigen al trabajo por cuenta propia, a la microempresa y las cooperativas, y al relevo generacional en el campo y la pesca.</aside>
+</section>
+
+<section id="m-autonomos-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Pequeño comercio" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v1.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 12.5V21h14v-8.5"/><path d="M10 21v-5h4v5"/></g></svg></div>
+<div id="railon" class="railon" style="left:1564px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 5 DE 8 · ANÁLISIS · ACCIONES 32, 33 Y 41 · AUTÓNOMOS Y PYMES</p>
+<h2 class="head s" style="--i:1; width:1600px">Autónomos, pymes y relevo en el campo</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">Nuevos autónomos</p><p class="kchip">Microempresas</p><p class="kchip">Relevo en el campo</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Los autónomos son una exclusión constitutiva: el ET no se les aplica porque falta ajenidad, ya que trabajan para sí mismos, y dependencia, porque nadie les manda. Y si no tienen trabajadores a su cargo, no tienen derecho de huelga.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill alta">Viabilidad alta</p><p class="txt">Es fácil de hacer: son ayudas y programas, no hay que cambiar leyes. Ojo con el «falso autónomo»: alguien a quien obligan a darse de alta como autónomo pero trabaja como un empleado. En ese caso, la ley presume que existe un contrato de trabajo (art. 8.1 ET).</p></div>
+</div>
+<aside>Los autónomos son una exclusión constitutiva: el Estatuto no se les aplica porque trabajan para sí mismos y nadie les manda. [CLIC] Es fácil, son ayudas. Ojo con el falso autónomo: si en realidad trabaja como un empleado, el artículo 8.1 del Estatuto presume que hay contrato de trabajo.</aside>
+</section>
+
+<section id="m-proteccion" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Escudo de protección" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></g></svg></div>
+<div id="railon" class="railon" style="left:1624px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 6 DE 8 · ACCIONES 16 Y 19 · POLÍTICAS PASIVAS</p>
+<h2 class="head s" style="--i:1; width:1600px">Que trabajar no cueste la ayuda</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q2">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 16 · TEXTO LITERAL</p><p class="qtxt">«<b>Coordinar las ayudas para que protejan mejor.</b> Reclamaremos al Estado un sistema de cooperación que permita a Canarias tramitar las solicitudes y el reconocimiento del ingreso mínimo vital, con participación de cabildos y ayuntamientos. Mejoraremos su coordinación con las prestaciones autonómicas. El objetivo es evitar que haya personas sin cobertura y que aceptar un empleo provoque una pérdida brusca de protección que empeore la situación del hogar.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 19 · TEXTO LITERAL</p><p class="qtxt">«<b>Proteger las pensiones no contributivas.</b> Reclamaremos al Estado que los complementos de renta que establezca Canarias sean compatibles con las pensiones no contributivas, estén exentos de tributación y no computen para reducir o retirar la prestación. Las ayudas canarias deben mejorar de forma efectiva los ingresos de las personas que las reciben.»</p></div>
+</div>
+<aside>Las acciones 16 y 19 van de protección social: que Canarias tramite el Ingreso Mínimo Vital, que aceptar un empleo no haga perder la ayuda de golpe y que los complementos canarios no resten de las pensiones no contributivas.</aside>
+</section>
+
+<section id="m-proteccion-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Escudo de protección" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></g></svg></div>
+<div id="railon" class="railon" style="left:1624px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 6 DE 8 · ANÁLISIS · ACCIONES 16 Y 19 · POLÍTICAS PASIVAS</p>
+<h2 class="head s" style="--i:1; width:1600px">Que trabajar no cueste la ayuda</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">Ingreso Mínimo Vital</p><p class="kchip">Compromiso de actividad</p><p class="kchip">Pensiones no contributivas</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Las políticas pasivas protegen a quien está en desempleo, como el paro. Ahora se «activan»: se busca que la persona no se acomode a la prestación. Por eso el desempleado firma un «compromiso de actividad» y debe aceptar las ofertas que encajen con su perfil.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill media">Viabilidad media</p><p class="txt">Es posible: el País Vasco y Navarra ya gestionan el Ingreso Mínimo Vital, es decir, lo tramitan ellos aunque la ley sea del Estado. Lo difícil es lo de las pensiones no contributivas, las que cobra quien no cotizó lo suficiente: exige cambiar una ley estatal.</p></div>
+</div>
+<aside>Son políticas pasivas, que protegen al desempleado, y se están activando: el desempleado firma un compromiso de actividad para no acomodarse a la ayuda. [CLIC] Es posible: el País Vasco y Navarra ya gestionan el Ingreso Mínimo Vital. Lo de las pensiones no contributivas exige cambiar una ley estatal.</aside>
+</section>
+
+<section id="m-extranjeria" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Globo terráqueo" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/></g></svg></div>
+<div id="railon" class="railon" style="left:1684px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 7 DE 8 · ACCIONES 1 Y 85 · POLÍTICA MIGRATORIA</p>
+<h2 class="head s" style="--i:1; width:1600px">Autorizaciones de trabajo en Canarias</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q2">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 1 · TEXTO LITERAL</p><p class="qtxt">«<b>Cumplir el Estatuto.</b> Exigiremos un calendario verificable para completar los traspasos y desarrollos pendientes del Estatuto de Autonomía, con medios económicos, personal y recursos materiales suficientes. Incluiremos la gestión del transporte aéreo interinsular y las autorizaciones de trabajo para personas extranjeras previstas en el Estatuto. Nos opondremos a la recentralización y a cualquier retroceso en la capacidad de Canarias para decidir sobre sus asuntos.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 85 · TEXTO LITERAL</p><p class="qtxt">«<b>Cooperación y voz canaria en las decisiones migratorias.</b> Reforzaremos la cooperación estable con Mauritania, Senegal, Marruecos, Cabo Verde y otros países de origen y tránsito en materia de desarrollo, seguridad, formación y movilidad ordenada. La respuesta incluirá la lucha contra las redes que se lucran a costa de las personas. Canarias deberá participar en el diseño y la aplicación de las políticas migratorias españolas y europeas que la afectan.»</p></div>
+</div>
+<aside>La acción 1 incluye, entre los traspasos pendientes del Estatuto, las autorizaciones de trabajo para personas extranjeras, y la 85 habla de movilidad ordenada y formación con los países de origen.</aside>
+</section>
+
+<section id="m-extranjeria-an" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Globo terráqueo" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/></g></svg></div>
+<div id="railon" class="railon" style="left:1684px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 7 DE 8 · ANÁLISIS · ACCIONES 1 Y 85 · POLÍTICA MIGRATORIA</p>
+<h2 class="head s" style="--i:1; width:1600px">Autorizaciones de trabajo en Canarias</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">Autorizaciones de trabajo</p><p class="kchip">Art. 36.5 Ley de Extranjería</p><p class="kchip">Precedente: País Vasco 2025</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Quien viene de fuera de la UE necesita una autorización administrativa para trabajar, pero el art. 36.5 de la Ley de Extranjería mantiene válido el contrato aunque no la tenga, para proteger sus derechos. Y la política migratoria es una política de demanda de empleo.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill alta">Viabilidad alta</p><p class="txt">Es fácil de hacer: Canarias solo tramitaría los permisos, que es «ejecutar»; las reglas las seguiría poniendo el Estado, que es «legislar». Hay precedente: el País Vasco recibió esta tarea en 2025 mediante un «traspaso», el paso de una competencia del Estado a una comunidad.</p></div>
+</div>
+<aside>La autorización de trabajo condiciona la capacidad para trabajar de quien viene de fuera de la UE, aunque el artículo 36.5 de la Ley de Extranjería mantiene válido el contrato sin ella. [CLIC] Es fácil: Canarias solo tramitaría los permisos y las reglas seguirían siendo del Estado. El País Vasco ya lo hace desde 2025.</aside>
+</section>
+
+<section id="m-colectivos" data-transition="magic">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Grupo de personas" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/><path d="M21 21v-2a4 4 0 0 0-3-3.9"/></g></svg></div>
+<div id="railon" class="railon" style="left:1744px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 8 DE 8 · ACCIONES 20 Y 87 · EMPLEO PREFERENTE</p>
+<h2 class="head s" style="--i:1; width:1600px">Discapacidad y canarios del exterior</h2>
+<div class="uline s" style="--i:2"></div>
+<div class="quotes q2">
+<div class="qbox a" style="--i:3"><p class="qnum">ACCIÓN 20 · TEXTO LITERAL</p><p class="qtxt">«<b>Accesibilidad en la vida diaria.</b> Exigiremos que los programas estatales y europeos de vivienda, transporte, empleo y servicios públicos destinados a Canarias incorporen las necesidades de las personas con discapacidad. La accesibilidad universal debe formar parte del diseño de las actuaciones y de su financiación.»</p></div>
+<div class="qbox a" style="--i:4"><p class="qnum">ACCIÓN 87 · TEXTO LITERAL</p><p class="qtxt">«<b>Proteger a los canarios del exterior y facilitar el retorno.</b> Reclamaremos cooperación y recursos del Estado para la atención social y sanitaria de los canarios del exterior, con especial atención a las personas mayores y a las familias en situación de necesidad. Impulsaremos el apoyo a quienes quieran retornar y reforzaremos los vínculos culturales con las nuevas generaciones, especialmente en países con una presencia histórica de emigración canaria.»</p></div>
+</div>
+<aside>Cierro el repaso con dos colectivos: la acción 20, sobre accesibilidad y discapacidad, y la 87, sobre los canarios del exterior y el retorno.</aside>
+</section>
+
+<section id="m-colectivos-an" data-transition="push">
+<div id="rail0" class="rail" style="left:1324px"></div>
+<div id="rail1" class="rail" style="left:1384px"></div>
+<div id="rail2" class="rail" style="left:1444px"></div>
+<div id="rail3" class="rail" style="left:1504px"></div>
+<div id="rail4" class="rail" style="left:1564px"></div>
+<div id="rail5" class="rail" style="left:1624px"></div>
+<div id="rail6" class="rail" style="left:1684px"></div>
+<div id="rail7" class="rail" style="left:1744px"></div>
+<div id="mico" class="mico p" style="--i:2"><svg aria-label="Grupo de personas" width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><g transform="scale(4)" fill="none" stroke="#0F2433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/><path d="M21 21v-2a4 4 0 0 0-3-3.9"/></g></svg></div>
+<div id="railon" class="railon" style="left:1744px"></div>
+<p class="eyebrow s" style="--i:0">MEDIDA 8 DE 8 · ANÁLISIS · ACCIONES 20 Y 87 · EMPLEO PREFERENTE</p>
+<h2 class="head s" style="--i:1; width:1600px">Discapacidad y canarios del exterior</h2>
+<div class="krow s" style="--i:2"><div class="uline"></div><p class="kchip">7 % de plazas públicas</p><p class="kchip">Art. 42 CE</p><p class="kchip">Accesibilidad universal</p></div>
+<div class="acols">
+<div class="card c2 big2 a" style="--i:3"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><p class="label">CON EL TEMARIO</p></div><p class="txt">Para colectivos con dificultades existen las fórmulas de «empleo preferente»: puestos reservados que pueden fijar los convenios y, en el empleo público, al menos el 7 % de las plazas para personas con discapacidad. Y el art. 42 CE orienta la política al retorno de los emigrantes.</p></div>
+<div class="card c3 big2 fragment stamp"><div class="lrow"><div class="ic"><svg class="xicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><p class="label">ENCAJE CON EL SISTEMA</p></div><p class="pill alta">Viabilidad alta</p><p class="txt">Es fácil de hacer: son criterios para repartir dinero y no cambian ninguna ley. Pero son tan generales que no dicen cuánto, cuándo ni cómo, así que después es difícil comprobar si se han cumplido.</p></div>
+</div>
+<aside>Conecta con el empleo preferente, como el 7 % de plazas públicas para personas con discapacidad, y con el artículo 42 de la Constitución sobre el retorno de los emigrantes. [CLIC] Es fácil porque no cambia leyes, pero es tan genérico que luego no se puede comprobar si se cumple.</aside>
+</section>
+
+<section id="semaforo" class="dark" data-transition="fade">
+<p class="eyebrow a" style="--i:0">BALANCE DE VIABILIDAD</p>
+<h2 class="head a" style="--i:1; width:1600px">Ninguna es imposible; algunas van cuesta arriba</h2>
+<div class="light">
+<div class="lcol a" style="--i:2"><p class="pill alta">Viabilidad alta</p><ul class="llist"><li>Planes de empleo (31, 45)</li><li>FP dual y becas (46, 47)</li><li>Autónomos y pymes (32, 33)</li><li>Autorizaciones de trabajo (1)</li><li>Discapacidad y retorno (20, 87)</li></ul></div>
+<div class="lcol fragment up"><p class="pill media">Viabilidad media</p><ul class="llist"><li>60 % del IRPF y 50 % de cuotas en las islas verdes (38)</li><li>IMV gestionado desde Canarias y compatible con trabajar (16)</li><li>Complementos que no resten de las PNC (19)</li></ul></div>
+<div class="lcol fragment stamp"><p class="pill dura">Cuesta arriba</p><ul class="llist"><li>Bonificar subidas salariales (36): es cara y puede pagar subidas que se harían igual</li></ul></div>
+</div>
+<p class="note fragment up">Común a todas: dependen de que el Congreso apruebe los Presupuestos o confirme los decretos-ley, normas urgentes que dicta el Gobierno.</p>
+<aside>En resumen, ninguna medida es imposible. La mayoría son fáciles porque son gasto o gestión y no cambian leyes laborales. [CLIC] En un nivel medio están las que necesitan una ley estatal, aunque tienen precedentes. [CLIC] La más difícil es bonificar las subidas salariales. [CLIC] Y todas dependen de que el Congreso apruebe Presupuestos o confirme decretos-ley: el programa es, en el fondo, una agenda de negociación.</aside>
+</section>
+
+<section id="ausencias" class="sun" data-transition="fade">
+<p class="eyebrow a" style="--i:0">LO QUE NO ESTÁ</p>
+<h2 class="head a" style="--i:1; width:1600px">Ni una línea sobre el contrato de trabajo</h2>
+<div class="chips">
+<div class="chip p" style="--i:2"><h3 class="h3">Temporalidad y contratos por circunstancias de la producción</h3></div>
+<div class="chip p" style="--i:3"><h3 class="h3">Fijos discontinuos en turismo y campañas agrarias</h3></div>
+<div class="chip p" style="--i:4"><h3 class="h3">Huelga, servicios mínimos y conflicto colectivo</h3></div>
+<div class="chip p" style="--i:5"><h3 class="h3">ETT y cesión de trabajadores</h3></div>
+<div class="chip p" style="--i:6"><h3 class="h3">Salario mínimo y jornada</h3></div>
+<div class="chip p" style="--i:7"><h3 class="h3">Despido y periodo de prueba</h3></div>
+</div>
+<p class="lead after fragment up">Es coherente con el reparto de competencias, pero sus diputados votarán todas esas leyes en el Congreso.</p>
+<aside>Lo que no está: el programa no dice nada del contrato de trabajo ni de las relaciones colectivas. Nada sobre temporalidad, fijos discontinuos, huelga y servicios mínimos, ETT, salario mínimo, jornada o despido. [CLIC] Es coherente con que Canarias no legisla en lo laboral, pero sus diputados votarán esas leyes y el programa no dice qué defenderán.</aside>
+</section>
+
+<section id="balance" data-transition="fade">
+<p class="eyebrow a" style="--i:0">CRÍTICA</p>
+<h2 class="head a" style="--i:1">Argumentos a favor y en contra</h2>
+<div class="two">
+<div class="side pro a" style="--i:2">
+<h3 class="h3">A favor</h3>
+<p class="arg fragment">El REF, el régimen económico y fiscal propio de Canarias, y el art. 349 del Tratado de la UE, que protege a las regiones ultraperiféricas, permiten un trato diferente.</p>
+<p class="arg fragment">Hay precedentes que funcionan: La Palma, Ceuta y Melilla, País Vasco y Navarra.</p>
+<p class="arg fragment">En un Congreso fragmentado, pocos escaños pesan en investiduras y Presupuestos.</p>
+</div>
+<div class="side con a" style="--i:3">
+<h3 class="h3">En contra</h3>
+<p class="arg fragment">Casi todo depende de fondos estatales y de Presupuestos aprobados.</p>
+<p class="arg fragment">Rebajar cotizaciones solo en un territorio cuesta dinero, puede pagar lo que se haría igual y abre el debate de la igualdad entre territorios (arts. 138 y 139 CE).</p>
+<p class="arg fragment">El empleo canario es estacional y temporal, y el programa no lo aborda desde la regulación del contrato.</p>
+</div>
+</div>
+<aside>Argumentos de ambos lados, uno por clic. A favor: [CLIC] Canarias tiene base jurídica para un trato diferente: su régimen económico y fiscal y su condición de región ultraperiférica. [CLIC] Hay precedentes que funcionan. [CLIC] Y en un Congreso fragmentado, pocos escaños pesan mucho. En contra: [CLIC] casi todo depende de fondos estatales y de Presupuestos. [CLIC] Rebajar cotizaciones solo en un territorio cuesta dinero y abre el debate de la igualdad entre territorios. [CLIC] Y la temporalidad se regula en el contrato, donde el programa no entra.</aside>
+</section>
+
+<section id="cierre" class="dark">
+<div class="stripe st1 d" style="--i:0"></div>
+<div class="stripe st2 d" style="--i:1"></div>
+<div class="stripe st3 d" style="--i:2"></div>
+<div class="closing">
+<p class="eyebrow a" style="--i:1">CONCLUSIÓN</p>
+<div class="mask"><h2 class="head rvl" style="--i:2">Un programa de política de empleo, no de Derecho del Trabajo</h2></div>
+<p class="lead a" style="--i:4; margin-top:40px; width:1180px">Pide recursos, incentivos y competencias de ejecución. Su viabilidad depende más de la aritmética parlamentaria que del Estatuto de los Trabajadores.</p>
+<p class="ask a" style="--i:6">¿Preguntas?</p>
+</div>
+<aside>Conclusión: las medidas laborales de «Defiende Canarias» son política de empleo, no Derecho del Trabajo en sentido estricto. Piden fondos, incentivos y competencias de ejecución, y casi todo encaja en el sistema actual precisamente porque no toca el contrato, la huelga ni el despido. Su viabilidad depende más de la aritmética parlamentaria del 29 de noviembre que del Estatuto de los Trabajadores. Muchas gracias; quedo abierto a vuestras preguntas.</aside>
+</section>
+
+</div></div>
+<div id="hud"><div id="bar"></div></div>
+<div id="count"></div>
+<div id="help">→ / clic: avanzar · ← atrás · F pantalla completa · N notas del orador</div>
+<div id="notes"></div>
+<script>
+
+(function () {
+  const stage = document.getElementById('stage');
+  const slides = Array.from(stage.querySelectorAll(':scope > section'));
+  const bar = document.getElementById('bar');
+  const count = document.getElementById('count');
+  const notes = document.getElementById('notes');
+  let cur = 0, step = 0, busy = false;
+
+  function fit() {
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  const frags = s => Array.from(s.querySelectorAll('.fragment'));
+  function setStep(s, n) { frags(s).forEach((f, i) => { f.classList.toggle('visible', i < n); f.classList.toggle('current-fragment', i === n - 1); }); }
+
+  function ui() {
+    bar.style.width = ((cur + 1) / slides.length * 100) + '%';
+    count.textContent = (cur + 1) + ' / ' + slides.length;
+    const a = slides[cur].querySelector('aside');
+    const txt = a ? a.textContent : '';
+    notes.innerHTML = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\[CLIC\]/g, '<b>▶ CLIC</b>');
+    const id = slides[cur].id; if (location.hash !== '#' + (cur + 1)) history.replaceState(null, '', '#' + (cur + 1));
+  }
+
+  function restart(el) { // reinicia animaciones CSS de la diapositiva entrante
+    el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
+  }
+
+  function go(to, dir, atEnd) {
+    if (busy || to < 0 || to >= slides.length || to === cur) return;
+    const from = slides[cur], next = slides[to];
+    const kind = (dir > 0 ? from.dataset.transition : next.dataset.transition) || 'fade';
+    busy = true;
+    setStep(next, atEnd ? frags(next).length : 0);
+    // posiciones previas para el "magic move"
+    const scale = stage.getBoundingClientRect().width / 1920;
+    const before = {};
+    if (kind === 'magic') from.querySelectorAll('[id]').forEach(el => { before[el.id] = el.getBoundingClientRect(); });
+    from.classList.remove('on'); from.classList.add('leaving');
+    restart(next);
+    const dur = kind === 'push' ? 650 : kind === 'magic' ? 600 : 500;
+    const ease = 'cubic-bezier(0.65, 0, 0.35, 1)';
+    let outA, inA;
+    if (kind === 'push') {
+      outA = from.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-dir * 100) + '%)' }], { duration: dur, easing: ease, fill: 'forwards' });
+      inA = next.animate([{ transform: 'translateX(' + (dir * 100) + '%)' }, { transform: 'translateX(0)' }], { duration: dur, easing: ease });
+    } else {
+      outA = from.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.8, easing: 'ease', fill: 'forwards' });
+      inA = next.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, easing: 'ease' });
+      if (kind === 'magic') {
+        next.querySelectorAll('[id]').forEach(el => {
+          const b = before[el.id]; if (!b) return;
+          const a = el.getBoundingClientRect();
+          const dx = (b.left - a.left) / scale, dy = (b.top - a.top) / scale;
+          if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+          el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'translate(0,0)' }], { duration: 700, easing: ease });
+        });
+      }
+    }
+    outA.onfinish = () => { from.classList.remove('leaving'); outA.cancel(); busy = false; };
+    cur = to; step = atEnd ? frags(next).length : 0; ui();
+  }
+
+  function next() {
+    const f = frags(slides[cur]);
+    if (step < f.length) { step++; setStep(slides[cur], step); return; }
+    go(cur + 1, 1, false);
+  }
+  function prev() {
+    if (step > 0) { step--; setStep(slides[cur], step); return; }
+    go(cur - 1, -1, true);
+  }
+
+  document.addEventListener('keydown', e => {
+    const k = e.key;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
+    else if (k === 'Home') go(0, -1, false);
+    else if (k === 'End') go(slides.length - 1, 1, false);
+    else if (k === 'n' || k === 'N') notes.classList.toggle('show');
+    else if (k === 'f' || k === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  document.addEventListener('click', e => { if (e.target.closest('#notes')) return; (e.clientX < window.innerWidth * 0.25) ? prev() : next(); });
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) (d < 0 ? next() : prev()); tx = null; });
+
+  let t; document.addEventListener('mousemove', () => { document.body.classList.remove('hidecursor'); clearTimeout(t); t = setTimeout(() => document.body.classList.add('hidecursor'), 2500); });
+  setTimeout(() => { const h = document.getElementById('help'); if (h) h.style.opacity = 0; }, 6000);
+
+  const h = parseInt((location.hash || '').slice(1), 10);
+  cur = (h >= 1 && h <= slides.length) ? h - 1 : 0;
+  slides.forEach(s => setStep(s, 0));
+  slides[cur].classList.add('on'); ui();
+})();
+
+</script>
+</body>
+</html>
